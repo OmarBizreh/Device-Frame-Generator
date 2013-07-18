@@ -16,14 +16,18 @@
 
 package com.f2prateek.dfg;
 
+import android.content.Context;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
+import com.f2prateek.dfg.core.tape.FrameGenerationTaskQueue;
 import com.f2prateek.dfg.ui.AboutFragment;
 import com.f2prateek.dfg.ui.BaseActivity;
 import com.f2prateek.dfg.ui.DeviceFragment;
 import com.f2prateek.dfg.ui.MainActivity;
 import com.f2prateek.dfg.ui.ReceiverActivity;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
@@ -47,5 +51,14 @@ public class DFGModule {
 
   @Provides @Singleton Bus provideOttoBus() {
     return new Bus();
+  }
+
+  @Provides @Singleton Gson provideGson() {
+    return new GsonBuilder().create();
+  }
+
+  @Provides @Singleton
+  FrameGenerationTaskQueue provideTaskQueue(Context context, Gson gson, Bus bus) {
+    return FrameGenerationTaskQueue.create(context, gson, bus);
   }
 }
